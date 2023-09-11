@@ -22,14 +22,7 @@ with col2:
 
     
 
-countdown = st.empty()
-combine_time_future = datetime.combine(d,t)
-while True:
-    current_time = datetime.now()
-    difference_time = combine_time_future - current_time
-    print(difference_time)
-    if difference_time <= timedelta(0):
-        break
+
 
 # "with" notation
 future_date = d - (date.today())
@@ -49,3 +42,18 @@ months, days = divmod(days, 30.44)
 
 st.title("Amount of years, months, and days")
 st.header(f"{years} : {months} : {days}")
+
+countdown = st.empty()
+combine_time_future = datetime.combine(d,t)
+while True:
+    current_time = datetime.now()
+    difference_time = combine_time_future - current_time
+    hours, seconds = divmod(difference_time.seconds, 3600)
+    minutes, seconds = divmod(seconds, 60)
+    print("Hours " , hours)
+    print("Minutes ", minutes)
+    print("Seconds ", seconds)
+    st.header(f"{hours} : {minutes} : {seconds}")
+    #print(difference_time)
+    if difference_time <= timedelta(0):
+        break
