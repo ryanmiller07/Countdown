@@ -2,9 +2,18 @@ from datetime import datetime
 import datetime as dt
 from datetime import date, timedelta
 import streamlit as st
+from time import sleep
+
+
 with st.sidebar:
     st.title("Countdown")
 # st.slider("hello",1,100,50)
+if "inputDate" not in st.session_state:
+    st.session_state["inputDate"] = " "
+
+if "inputTime" not in st.session_state:
+    st.session_state["inputTime"] = None
+
 col1,col2 = st.columns(2)
 with col1:
     st.title("Countdown timer")
@@ -18,12 +27,11 @@ with col2:
     st.title("")
     st.title("")
     st.title("")
-    t = st.time_input('Enter a time of the upcoming date.')
+    t = st.time_input('Enter a time of the upcoming date.', st.session_state["inputTime"])
+
+st.session_state["inputTime"] = t
 
     
-
-
-
 # "with" notation
 future_date = d - (date.today())
 days = future_date.days
@@ -43,9 +51,16 @@ months, days = divmod(days, 30.44)
 st.title("Amount of years, months, and days")
 st.header(f"{years} : {months} : {days}")
 
+if "hmsHeader" not in st.session_state:
+    st.session_state["hmsHeader"] = " "
+
 countdown = st.empty()
 combine_time_future = datetime.combine(d,t)
+# hms = st.header("")
+# oldhmsText = ""
+hms = st.header(st.session_state["hmsHeader"])
 while True:
+    sleep(1)
     current_time = datetime.now()
     difference_time = combine_time_future - current_time
     hours, seconds = divmod(difference_time.seconds, 3600)
@@ -53,7 +68,12 @@ while True:
     print("Hours " , hours)
     print("Minutes ", minutes)
     print("Seconds ", seconds)
-    st.header(f"{hours} : {minutes} : {seconds}")
+    text = f"{hours} : {minutes} : {seconds}"
+    st.session_state["hmsHeader"] = text
+    st.experimental_rerun()
     #print(difference_time)
+    # oldhmsText = f"{hours} : {minutes} : {seconds}"
     if difference_time <= timedelta(0):
         break
+    st.experimental_rerun()
+
